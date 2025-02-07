@@ -1,0 +1,10 @@
+Skal:
+Hente ut kommende kamper og odds fra Norsk Tipping
+Hente ut sjanser på en kamp fra ClubELO
+Hente ut odds for en kamp fra Pinnacle
+
+
+Norsk Tipping API:
+Få alle kamper en uke fram i tid: https://api.norsk-tipping.no/OddsenGameInfo/v1/api/events/FBL
+ClubELO API:
+Pinnacle API:
