@@ -26,6 +26,9 @@ class NorskTippingAPI(ExternalDataSource):
 	async def get_coming_matches(self):
 		return await self.fetch_data("events/FBL")
 	
+	async def get_market_for_match(self, NT_id: str):
+		return await self.fetch_data(f"markets/{NT_id}")
+	
 class ClubELOAPI(ExternalDataSource):
 	async def fetch_data(self, extension):
 		print(f'api.clubelo.com/{extension}')

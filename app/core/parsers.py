@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, Optional
-from .schemas import MatchModel, Odds, ELORating
+from .schemas import MatchModel, Odds, ELORating, DetailedMatchModel
 from .repositories import TeamRatingsRepository, FixturesRepository
 from app.utils.utils import tournaments_of_interest
 
@@ -77,3 +77,10 @@ class MatchParser:
         except (ValueError, TypeError, KeyError) as e:
             print(f"Error parsing match: {e}")  # You might want to use proper logging here
             return None
+    
+    def parse_detailed_match(self, match: Dict) -> Optional[DetailedMatchModel]:
+        match_model = self.parse_match(match)
+        if not match_model:
+            return None
+        xGD = 1.0 #Egentlig match.home_team og match.away_team
+        return DetailedMatchModel(**match_model.model_dump(), xGD=xGD)

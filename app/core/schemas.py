@@ -28,5 +28,11 @@ class MatchModel(SimpleMatchModel):
 	odds: Odds
 	elo: ELORating
 
+class DetailedMatchModel(MatchModel):
+	xGD: float
+
 class MatchListResponseModel(BaseModel):
 	eventList: List[MatchModel]
+
+class DetailedMatchResponseModel(BaseModel):
+	event: DetailedMatchModel
