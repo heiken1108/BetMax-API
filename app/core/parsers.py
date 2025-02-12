@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, Optional
-from app.core.schemas import MatchModel, Odds, ELORating
-from app.core.repositories import TeamRatingsRepository, FixturesRepository
+from .schemas import MatchModel, Odds, ELORating
+from .repositories import TeamRatingsRepository, FixturesRepository
 from app.utils.utils import tournaments_of_interest
 
 class MatchParser:

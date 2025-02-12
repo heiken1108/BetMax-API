@@ -5,7 +5,6 @@ from app.core.repositories import TeamRatingsRepository, FixturesRepository
 from app.core.parsers import MatchParser
 
 
-
 class MatchesService:
     """Main service for handling match-related operations"""
     def __init__(self):

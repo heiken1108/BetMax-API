@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict
 import pandas as pd
-from app.core.schemas import ELOProbs
+from .schemas import ELOProbs
 
 @dataclass
 class TeamRatingsRepository:

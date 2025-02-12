@@ -46,6 +46,7 @@ NT_to_ClubELO_names_mapping = {
 	'Real Sociedad': 'Sociedad',
 }
 
+#Not in use
 def calculate_elo_probs(home_elo: float, away_elo: float):
 	elo_diff = home_elo + HOME_ADVANTAGE - away_elo
 	prob_home_without_draws = 1 / (1 + 10 ** (-elo_diff / 400))
