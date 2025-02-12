@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import aiohttp
+import pandas as pd
+from io import StringIO
 
 class ExternalDataSource(ABC):
 	def __init__(self):
@@ -26,12 +28,14 @@ class NorskTippingAPI(ExternalDataSource):
 	
 class ClubELOAPI(ExternalDataSource):
 	async def fetch_data(self, extension):
+		print(f'api.clubelo.com/{extension}')
 		async with self.session.get(
-			f"https://api.clubelo.com/{extension}",
+			f"http://api.clubelo.com/{extension}",
 			headers={}
 		) as response:
 			response.raise_for_status()
-			return await response.json()
+			csv = await response.text()
+			return pd.read_csv(StringIO(csv))
 		
 	async def get_one_days_ranking(self, date): #Date på format YYYY-MM-DD
 		return await self.fetch_data(date)
