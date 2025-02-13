@@ -1,10 +1,6 @@
 from fastapi import FastAPI
 from app.api.routes import router
 from contextlib import asynccontextmanager
-import aiohttp
-from datetime import date
-import pandas as pd
-import io
 from app.background.data_updater import DataUpdater
 
 data_updater = DataUpdater()
