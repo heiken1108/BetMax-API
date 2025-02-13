@@ -3,6 +3,7 @@ from asyncio import Task
 import aiohttp
 import pandas as pd
 import io
+import os
 import asyncio
 from datetime import date
 
@@ -23,6 +24,7 @@ class DataUpdater:
 						data = await response.text()
 						df = pd.read_csv(io.StringIO(data)) 
 						df.set_index('Club', inplace=True)
+						os.makedirs(os.path.dirname(self.elo_csv_path), exist_ok=True)
 						df.to_csv(self.elo_csv_path)
 						print(f"CSV downloaded and saved to {self.elo_csv_path}")
 						return True
@@ -40,6 +42,7 @@ class DataUpdater:
 					if response.status == 200:
 						data = await response.text()
 						df = pd.read_csv(io.StringIO(data), index_col=['Home', 'Away'])
+						os.makedirs(os.path.dirname(self.fixtures_csv_path), exist_ok=True)
 						df.to_csv(self.fixtures_csv_path)
 						print(f"CSV downloaded and saved to {self.fixtures_csv_path}")
 						return True
