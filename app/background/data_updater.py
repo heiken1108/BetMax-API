@@ -60,7 +60,7 @@ class DataUpdater:
 					self.download_elo_csv(),
 					self.download_fixtures_csv()
 				)
-				await asyncio.sleep(3600) #Vil egentlig ha ved et fikset tidspunkt hver dag
+				await asyncio.sleep(60*60*24) #Vil egentlig ha ved et fikset tidspunkt hver dag
 			except Exception as e:
 				print(f"Error in update loop: {e}")
 				await asyncio.sleep(5)
