@@ -1,5 +1,5 @@
 from app.core.schemas import ELOProbs
-tournaments_of_interest = ['England - Premier League', 'Italia - Serie A', 'Frankrike -  Ligue 1', 'Spania - Primera Division', 'Tyskland - Bundesliga']
+tournaments_of_interest = ['England - Premier League', 'Italia - Serie A', 'Frankrike -  Ligue 1', 'Spania - Primera Division', 'Tyskland - Bundesliga', 'Internasjonal klubb - UEFA Champions League']
 DRAW_FACTOR = 0.36 #0.36 i LaLiga
 HOME_ADVANTAGE = 65 #65 i LaLiga
 
@@ -44,6 +44,12 @@ NT_to_ClubELO_names_mapping = {
 	'FSV Mainz': 'Mainz',
 	'Real Betis': 'Betis',
 	'Real Sociedad': 'Sociedad',
+	'Club Brugge': 'Brugge',
+	'AS Monaco': 'Monaco',
+	'Sporting CP': 'Sporting',
+	'FC Porto': 'Porto',
+	'Paris Saint Germain': 'Paris SG',
+	'PSV Eindhoven': 'PSV',
 }
 
 #Not in use

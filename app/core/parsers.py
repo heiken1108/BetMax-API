@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, Optional
-from .schemas import MatchModel, Odds, ELORating, DetailedMatchModel
+from .schemas import MatchModel, Odds, ELORating, DetailedMatchModel, HUBSuggestions
 from .repositories import TeamRatingsRepository, FixturesRepository
 from app.utils.utils import tournaments_of_interest
 
@@ -53,6 +53,11 @@ class MatchParser:
             home_team = match.get("homeParticipant", '')
             away_team = match.get("awayParticipant", '')
             odds = self.parse_odds(match.get('mainMarket', {}))
+            probs = self.fixtures_repo.get_match_probabilities(
+                        home_team, 
+                        away_team, 
+                        self.ratings_repo.name_mapping
+                    )
             
             if not odds:
                 return None
@@ -67,11 +72,12 @@ class MatchParser:
                 elo=ELORating(
                     home_elo=self.ratings_repo.get_elo_rating(home_team),
                     away_elo=self.ratings_repo.get_elo_rating(away_team),
-                    probs=self.fixtures_repo.get_match_probabilities(
-                        home_team, 
-                        away_team, 
-                        self.ratings_repo.name_mapping
-                    )
+                    probs=probs
+                ),
+                suggestions=HUBSuggestions(
+                    home=odds.home > (1/probs.home_prob) if probs.home_prob > 0 else False,
+                    draw=odds.draw > (1/probs.draw_prob) if probs.draw_prob > 0 else False,
+                    away=odds.away > (1/probs.away_prob) if probs.away_prob > 0 else False
                 )
             )
         except (ValueError, TypeError, KeyError) as e:

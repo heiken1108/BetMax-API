@@ -6,6 +6,7 @@ import io
 import os
 import asyncio
 from datetime import date
+from app.predictor.training import PredictorTrainer
 
 class DataUpdater:
 	def __init__(self):
@@ -58,7 +59,7 @@ class DataUpdater:
 			try:
 				await asyncio.gather(
 					self.download_elo_csv(),
-					self.download_fixtures_csv()
+					self.download_fixtures_csv(),
 				)
 				await asyncio.sleep(60*60*24) #Vil egentlig ha ved et fikset tidspunkt hver dag
 			except Exception as e:
