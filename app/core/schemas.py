@@ -17,10 +17,10 @@ class ELORating(BaseModel):
 	away_elo: float
 	probs: ELOProbs
 
-class HUBSuggestions(BaseModel):
-	home: bool
-	draw: bool
-	away: bool
+class HUBDifferences(BaseModel):
+	home: float
+	draw: float
+	away: float
 
 class SimpleMatchModel(BaseModel):
 	NT_id: str
@@ -32,7 +32,7 @@ class SimpleMatchModel(BaseModel):
 class MatchModel(SimpleMatchModel):
 	odds: Odds
 	elo: ELORating
-	suggestions: HUBSuggestions
+	odds_differences: HUBDifferences
 
 class DetailedMatchModel(MatchModel):
 	xGD: float
