@@ -2,25 +2,15 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List
 
-class Odds(BaseModel):
+class HUBModel(BaseModel):
 	home: float
 	draw: float
 	away: float
-
-class ELOProbs(BaseModel):
-	home_prob: float
-	draw_prob: float
-	away_prob: float
 
 class ELORating(BaseModel):
 	home_elo: float
 	away_elo: float
-	probs: ELOProbs
-
-class HUBDifferences(BaseModel):
-	home: float
-	draw: float
-	away: float
+	probs: HUBModel
 
 class SimpleMatchModel(BaseModel):
 	NT_id: str
@@ -30,9 +20,10 @@ class SimpleMatchModel(BaseModel):
 	tournament: str
 
 class MatchModel(SimpleMatchModel):
-	odds: Odds
+	odds: HUBModel
 	elo: ELORating
-	odds_differences: HUBDifferences
+	odds_differences: HUBModel
+	expected_value: HUBModel
 
 class DetailedMatchModel(MatchModel):
 	xGD: float

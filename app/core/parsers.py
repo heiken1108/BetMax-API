@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, Optional
-from .schemas import MatchModel, Odds, ELORating, DetailedMatchModel, HUBDifferences
+from .schemas import MatchModel, ELORating, DetailedMatchModel, HUBModel
 from .repositories import TeamRatingsRepository, FixturesRepository
 from app.utils.utils import tournaments_of_interest
 
@@ -28,7 +28,7 @@ class MatchParser:
             main_market.get('marketName') == 'HUB'
         ])
 
-    def parse_odds(self, market_data: Dict) -> Optional[Odds]:
+    def parse_odds(self, market_data: Dict) -> Optional[HUBModel]:
         if not market_data:
             return None
             
@@ -37,7 +37,7 @@ class MatchParser:
             return None
             
         try:
-            return Odds(
+            return HUBModel(
                 home=selections[0].get('selectionOdds', 0),
                 draw=selections[1].get('selectionOdds', 0),
                 away=selections[2].get('selectionOdds', 0)
@@ -58,6 +58,16 @@ class MatchParser:
                         away_team, 
                         self.ratings_repo.name_mapping
                     )
+            odds_differences = HUBModel(
+                home=odds.home - (1/probs.home) if probs.home > 0 else 0,
+                draw=odds.draw - (1/probs.draw) if probs.draw > 0 else 0,
+                away=odds.away - (1/probs.away) if probs.away > 0 else 0
+            )
+            expected_value = HUBModel(
+                home=odds.home * probs.home,
+                draw=odds.draw * probs.draw,
+                away=odds.away * probs.away
+            )
             
             if not odds:
                 return None
@@ -74,11 +84,8 @@ class MatchParser:
                     away_elo=self.ratings_repo.get_elo_rating(away_team),
                     probs=probs
                 ),
-                odds_differences=HUBDifferences(
-                    home=odds.home - (1/probs.home_prob) if probs.home_prob > 0 else 0,
-                    draw=odds.draw - (1/probs.draw_prob) if probs.draw_prob > 0 else 0,
-                    away=odds.away - (1/probs.away_prob) if probs.away_prob > 0 else 0
-                )
+                odds_differences=odds_differences,
+                expected_value=expected_value
             )
         except (ValueError, TypeError, KeyError) as e:
             print(f"Error parsing match: {e}")  # You might want to use proper logging here

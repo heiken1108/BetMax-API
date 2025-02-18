@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Dict
 import pandas as pd
-from .schemas import ELOProbs
+from .schemas import HUBModel
 
 @dataclass
 class TeamRatingsRepository:
@@ -35,19 +35,19 @@ class FixturesRepository:
     def from_csv(cls, filepath: str) -> 'FixturesRepository':
         return cls(pd.read_csv(filepath, index_col=['Home', 'Away']))
 
-    def get_match_probabilities(self, home_team: str, away_team: str, name_mapping: Dict[str, str]) -> ELOProbs:
+    def get_match_probabilities(self, home_team: str, away_team: str, name_mapping: Dict[str, str]) -> HUBModel:
         if not home_team or not away_team:
-            return ELOProbs(home_prob=0, draw_prob=0, away_prob=0)
+            return HUBModel(home=0, drawb=0, away=0)
             
         home = name_mapping.get(home_team, home_team)
         away = name_mapping.get(away_team, away_team)
         
         try:
             row = self.fixtures.loc[home, away]
-            return ELOProbs(
-                home_prob=sum(row[f'GD={i}'] for i in range(1, 6)) + row['GD>5'],
-                draw_prob=row['GD=0'],
-                away_prob=sum(row[f'GD={-i}'] for i in range(1, 6)) + row['GD<-5']
+            return HUBModel(
+                home=sum(row[f'GD={i}'] for i in range(1, 6)) + row['GD>5'],
+                draw=row['GD=0'],
+                away=sum(row[f'GD={-i}'] for i in range(1, 6)) + row['GD<-5']
             )
         except KeyError:
-            return ELOProbs(home_prob=0, draw_prob=0, away_prob=0)
+            return HUBModel(home=0, draw=0, away=0)

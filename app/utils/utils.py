@@ -1,4 +1,4 @@
-from app.core.schemas import ELOProbs
+from app.core.schemas import HUBModel
 tournaments_of_interest = ['England - Premier League', 'Italia - Serie A', 'Frankrike -  Ligue 1', 'Spania - Primera Division', 'Tyskland - Bundesliga', 'Internasjonal klubb - UEFA Champions League']
 DRAW_FACTOR = 0.36 #0.36 i LaLiga
 HOME_ADVANTAGE = 65 #65 i LaLiga
@@ -62,7 +62,7 @@ def calculate_elo_probs(home_elo: float, away_elo: float):
 	)
 	prob_home = prob_home_without_draws - prob_draw / 2
 	prob_away = prob_away_without_draws - prob_draw / 2
-	return ELOProbs(home_prob=prob_home, draw_prob=prob_draw, away_prob=prob_away)
+	return HUBModel(home=prob_home, draw=prob_draw, away=prob_away)
 
 
 
