@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Dict, Optional
-from .schemas import MatchModel, ELORating, DetailedMatchModel, HUBModel
+from .schemas import MatchSummaryModel, ELOModel, MatchDetailModel, HUBModel
 from .repositories import TeamRatingsRepository, FixturesRepository
 from app.utils.utils import tournaments_of_interest
 
@@ -45,7 +45,7 @@ class MatchParser:
         except (IndexError, TypeError):
             return None
 
-    def parse_match(self, match: Dict) -> Optional[MatchModel]:
+    def parse_match(self, match: Dict) -> Optional[MatchSummaryModel]:
         if not self.is_valid_match(match):
             return None
 
@@ -72,14 +72,14 @@ class MatchParser:
             if not odds:
                 return None
 
-            return MatchModel(
+            return MatchSummaryModel(
                 NT_id=match.get("eventId", ''),
                 home_team=home_team,
                 away_team=away_team,
                 start_time=datetime.fromisoformat(match.get("startTime", '')),
                 tournament=match.get("tournament", {}).get("name", ''),
                 odds=odds,
-                elo=ELORating(
+                elo=ELOModel(
                     home_elo=self.ratings_repo.get_elo_rating(home_team),
                     away_elo=self.ratings_repo.get_elo_rating(away_team),
                     probs=probs
@@ -91,9 +91,8 @@ class MatchParser:
             print(f"Error parsing match: {e}")  # You might want to use proper logging here
             return None
     
-    def parse_detailed_match(self, match: Dict) -> Optional[DetailedMatchModel]:
+    def parse_detailed_match(self, match: Dict) -> Optional[MatchDetailModel]:
         match_model = self.parse_match(match)
         if not match_model:
             return None
-        xGD = 1.0 #Egentlig match.home_team og match.away_team
-        return DetailedMatchModel(**match_model.model_dump(), xGD=xGD)
+        return MatchDetailModel(**match_model.model_dump(), markets=[])

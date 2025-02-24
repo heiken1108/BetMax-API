@@ -1,35 +1,53 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List, Union, TypeVar, Generic
 
 class HUBModel(BaseModel):
 	home: float
 	draw: float
 	away: float
 
-class ELORating(BaseModel):
+class BoolModel(BaseModel):
+	true: float
+	false: float
+
+T = TypeVar("T", HUBModel, BoolModel)
+
+class MarketModel(BaseModel, Generic[T]):
+	name: str
+	selections: T
+	odds_difference: T
+	expected_value: T
+
+class ELOModel(BaseModel):
 	home_elo: float
 	away_elo: float
 	probs: HUBModel
-
-class SimpleMatchModel(BaseModel):
+	
+class MatchSummaryModel(BaseModel):
 	NT_id: str
 	home_team: str
 	away_team: str
 	start_time: datetime
 	tournament: str
-
-class MatchModel(SimpleMatchModel):
 	odds: HUBModel
-	elo: ELORating
+	elo: ELOModel
 	odds_differences: HUBModel
 	expected_value: HUBModel
 
-class DetailedMatchModel(MatchModel):
-	xGD: float
+class MatchDetailModel(BaseModel):
+	NT_id: str
+	home_team: str
+	away_team: str
+	start_time: datetime
+	tournament: str
+	markets: List[MarketModel]
+	elo: ELOModel
+	odds_differences: HUBModel
+	expected_value: HUBModel
 
 class MatchListResponseModel(BaseModel):
-	eventList: List[MatchModel]
+	eventList: List[MatchSummaryModel]
 
-class DetailedMatchResponseModel(BaseModel):
-	event: DetailedMatchModel
+class MatchDetailResponseModel(BaseModel):
+	event: MatchDetailModel
