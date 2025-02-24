@@ -43,11 +43,6 @@ class MatchDetailModel(BaseModel):
 	tournament: str
 	markets: List[MarketModel]
 	elo: ELOModel
-	odds_differences: HUBModel
-	expected_value: HUBModel
 
 class MatchListResponseModel(BaseModel):
 	eventList: List[MatchSummaryModel]
-
-class MatchDetailResponseModel(BaseModel):
-	event: MatchDetailModel

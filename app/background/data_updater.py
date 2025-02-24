@@ -6,7 +6,7 @@ import io
 import os
 import asyncio
 from datetime import date
-from app.predictor.training import PredictorTrainer
+#from app.predictor.training import PredictorTrainer
 
 class DataUpdater:
 	def __init__(self):
