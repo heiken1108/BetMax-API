@@ -102,7 +102,7 @@ class MatchParser:
                 away=odds.away * probs.away
             )
             
-            if not odds:
+            if not odds or not probs or (probs.home == 0 and probs.draw == 0 and probs.away == 0):
                 return None
 
             return MatchSummaryModel(
