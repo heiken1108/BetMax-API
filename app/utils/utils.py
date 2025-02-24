@@ -1,5 +1,5 @@
 from app.core.schemas import HUBModel
-tournaments_of_interest = ['England - Premier League', 'Italia - Serie A', 'Frankrike -  Ligue 1', 'Spania - Primera Division', 'Tyskland - Bundesliga', 'Internasjonal klubb - UEFA Champions League']
+tournaments_of_interest = ['England - Premier League', 'Italia - Serie A', 'Frankrike -  Ligue 1', 'Spania - Primera Division', 'Tyskland - Bundesliga', 'Internasjonal klubb - UEFA Champions League', 'Internasjonal klubb - UEFA Europa League', 'Internasjonal klubb - UEFA Conference League']
 DRAW_FACTOR = 0.36 #0.36 i LaLiga
 HOME_ADVANTAGE = 65 #65 i LaLiga
 
