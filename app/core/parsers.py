@@ -156,7 +156,7 @@ class MatchParser:
             probs = market_parser(home_team, away_team)
             if probs is None:
                 return None
-            probs = BoolModel(true=probs.true, false=probs.true)
+            probs = BoolModel(true=probs.true, false=probs.false)
             expected_value = BoolModel(true=odds.true * probs.true, false=odds.false * probs.false)
             return MarketModel(name=market_name, selections=odds, probs=probs, expected_value=expected_value)
         elif len(selections) == 3:
