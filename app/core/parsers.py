@@ -91,11 +91,6 @@ class MatchParser:
                 away_elo=self.ratings_repo.get_elo_rating(away_team),
                 probs=probs
             )
-            odds_differences = HUBModel(
-                home=odds.home - (1/probs.home) if probs.home > 0 else 0,
-                draw=odds.draw - (1/probs.draw) if probs.draw > 0 else 0,
-                away=odds.away - (1/probs.away) if probs.away > 0 else 0
-            )
             expected_value = HUBModel(
                 home=odds.home * probs.home,
                 draw=odds.draw * probs.draw,
@@ -113,7 +108,6 @@ class MatchParser:
                 tournament=tournament,
                 odds=odds,
                 elo=elo,
-                odds_differences=odds_differences,
                 expected_value=expected_value
             )
         except (ValueError, TypeError, KeyError) as e:
@@ -162,18 +156,18 @@ class MatchParser:
             probs = market_parser(home_team, away_team)
             if probs is None:
                 return None
-            odds_differences = BoolModel(true=odds.true - (1/probs.true), false=odds.false - (1/probs.false))
+            probs = BoolModel(true=probs.true, false=probs.true)
             expected_value = BoolModel(true=odds.true * probs.true, false=odds.false * probs.false)
-            return MarketModel(name=market_name, selections=odds, odds_difference=odds_differences, expected_value=expected_value)
+            return MarketModel(name=market_name, selections=odds, probs=probs, expected_value=expected_value)
         elif len(selections) == 3:
             odds = HUBModel(home=selections[0].get('selectionOdds'), draw=selections[1].get('selectionOdds'), away=selections[2].get('selectionOdds'))
             market_parser = self.market_parsers.get(market_name, lambda *args, **kwargs: None)
             probs = market_parser(home_team, away_team)
             if probs is None:
                 return None
-            odds_differences = HUBModel(home=odds.home - (1/probs.home), draw=odds.draw - (1/probs.draw), away=odds.away - (1/probs.away))
+            probs = HUBModel(home=probs.home, draw=probs.draw, away=probs.away)
             expected_value = HUBModel(home=odds.home * probs.home,draw=odds.draw * probs.draw,away=odds.away * probs.away)
-            return MarketModel(name=market_name, selections=odds, odds_difference=odds_differences, expected_value=expected_value)
+            return MarketModel(name=market_name, selections=odds, probs=probs, expected_value=expected_value)
         else:
             return None
 

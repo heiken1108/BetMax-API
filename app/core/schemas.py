@@ -16,7 +16,7 @@ T = TypeVar("T", HUBModel, BoolModel)
 class MarketModel(BaseModel, Generic[T]):
 	name: str
 	selections: T
-	odds_difference: T
+	probs: T
 	expected_value: T
 
 class ELOModel(BaseModel):
@@ -32,7 +32,6 @@ class MatchSummaryModel(BaseModel):
 	tournament: str
 	odds: HUBModel
 	elo: ELOModel
-	odds_differences: HUBModel
 	expected_value: HUBModel
 
 class MatchDetailModel(BaseModel):
